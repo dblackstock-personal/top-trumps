@@ -1,0 +1,32 @@
+html, body, #wrapper{
+    overflow-y:hidden;
+    overflow-x:hidden;
+}
+
+#wrapper{
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100vw;
+    height: 100vh;
+    background-color: cornsilk;
+}
+
+h1{
+    text-align:center;
+}
+
+#current-card-values{
+    display: flex;
+    width: 100%;
+    flex-wrap:wrap;
+    list-style:none;
+    padding:0;
+}
+
+#current-card-values li{
+    flex: 0 0 50%;
+    text-align: center;
+    padding: 5% 0%;
+    /* border: 1px black solid; */
+    background-color: cyan;
+    box-shadow: darkblue;
+}

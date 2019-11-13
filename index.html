@@ -4,10 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./style.css">
     <title>Document</title>
 </head>
 <body>
+    <div id=wrapper>
     <h1>FRUIT TOP TRUMPS</h1>
+    <h2>Subtitle</h2>
+    <p id=deck-sizes></p>
+    <p id=last-turn></p>
+    <p>Your current card:</p>
+    <h3 id=current-card-name></h3>
+    <p id=picture></p>
+    <ul id="current-card-values">
+        <li id=tastiness></li>
+        <li id=size></li>
+        <li id=vowels></li>
+        <li id=difficulty></li>
+    </ul>
+    <input id="input" type="hidden" readonly>Choose a value to compare</input>
+    <button id="go">Go!</button>
+     </div>     
     <script src="topTrumps.js"></script>
 </body>
 </html>

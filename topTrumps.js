@@ -1,22 +1,23 @@
 //---this bit is for creating the cards---
 
 class Card {
-    constructor(name, tastinessNo, sizeNo, vowelsNo, difficultyToEat) {
+    constructor(name, tastinessNo, sizeNo, vowelsNo, difficultyToEat,image) {
         this.name = name;
         this.tastiness = { number: tastinessNo, highestWins: true };
         this.size = { number: sizeNo, highestWins: true };   //length or diameter in inches
         this.vowels = { number: vowelsNo, highestWins: true };
         this.difficulty = { number: difficultyToEat, highestWins: false };  //the lowest result wins for this one
+        this.image = image;
         this.winsNum = 0;
     }
 }
 
-const orange = new Card(`Orange`, 7, 3, 3, 3);
-const pineapple = new Card(`Pineapple`, 2, 12, 4, 5);
-const grapeWithSeeds = new Card(`Seeded Grape`, 2, 0.5, 5, 1);
-const grapeNoSeeds = new Card(`Unseeded Grape`, 4, 0.5, 6, 1);
-const mango = new Card(`Mango`, 10, 9, 2, 4);
-const apple = new Card(`Apple`, 6, 3, 2, 3);
+const orange = new Card(`Orange`, 7, 3, 3, 3,`./images/orange.jpg`);
+const pineapple = new Card(`Pineapple`, 2, 12, 4, 5,`./images/pineapple.png`);
+const grapeWithSeeds = new Card(`Seeded Grape`, 2, 0.5, 5, 1,`./images/grape-seeded.png`);
+const grapeNoSeeds = new Card(`Unseeded Grape`, 4, 0.5, 6, 1,`./images/grape-seedless.jpg`);
+const mango = new Card(`Mango`, 10, 9, 2, 4,`./images/mango.jpg`);
+const apple = new Card(`Apple`, 6, 3, 2, 3,`./images/apple.jpg`);
 const pear = new Card(`Pear`, 3, 6, 2, 3);
 const watermelon = new Card(`Watermelon`, 9, 24, 4, 4);
 const honeydew = new Card(`Honeydew Melon`, 7, 7, 5, 4);
@@ -80,7 +81,7 @@ const compare = (value) => {
     value = value.toLowerCase();
     let card1 = deckPlayer1.cards[0];
     let card2 = deckPlayer2.cards[0];
-    
+
     //if an invalid value was passed in it should be picked up here
     if (!card1.hasOwnProperty(value)) {
         return `please enter a value type.`;
@@ -115,18 +116,7 @@ const cardWins = (deckWin, value, deckLose, tie) => {   //tie is passed in as a 
 
 }
 
-const playGame = () => {
-    while (deckPlayer1.cards.length != 0 && deckPlayer2.cards.length != 0) {
-        //this is the initial screen and every card-selection screen
-        let compareNumber = prompt(`Player1: ${deckPlayer1.cards.length} cards. Player2: ${deckPlayer2.cards.length} cards. Tie Deck: ${tieDeck.cards.length} cards.\n
-        Player1: Your current card is ${deckPlayer1.cards[0].name}. It's values are
-        ↑Tastiness = ${deckPlayer1.cards[0].tastiness.number}
-        ↑Size = ${deckPlayer1.cards[0].size.number}
-        ↑Vowels = ${deckPlayer1.cards[0].vowels.number}
-        ↓Difficulty = ${deckPlayer1.cards[0].difficulty.number}
-       Please choose a value to compare.`);
-        alert(compare(compareNumber));
-    }
+const gameOver = () => {
 
     const whoWon = () => {
         if (deckPlayer1.cards.length > deckPlayer2.cards.length) {
@@ -134,11 +124,97 @@ const playGame = () => {
         }
         else return `Player 2`;
     }
-    alert(`The game is over! ${whoWon()} won!`)
+
+    if (deckPlayer1.cards.length != 0 && deckPlayer2.cards.length != 0) {
+        return;
+    } else {
+        alert(`The game is over! ${whoWon()} won!`);
+    }
 }
 
+//Let's put some links in to the HTML.
+const screenDeckSizes = document.getElementById("deck-sizes");
+const screenCardName = document.getElementById("current-card-name");
+const screenValueTastiness = document.getElementById("tastiness");
+const screenValueSize = document.getElementById("size");
+const screenValueVowels = document.getElementById("vowels");
+const screenValueDifficulty = document.getElementById("difficulty");
+const screenInput = document.getElementById("input");
+const screenConfirm = document.getElementById("go");
+const screenLastTurn = document.getElementById("last-turn");
+const screenPicture = document.getElementById("picture");
 
-playGame();
+const updateScreen = () => {
+    let card1 = deckPlayer1.cards[0];
+
+    screenInput.value = null;
+
+    //There REALLY needs to be a better alternative for all of these lines
+    screenValueTastiness.style.backgroundColor='';
+    screenValueSize.style.backgroundColor='';
+    screenValueVowels.style.backgroundColor='';
+    screenValueDifficulty.style.backgroundColor='';
+
+    screenDeckSizes.textContent = `Player1: ${deckPlayer1.cards.length} cards. Player2: ${deckPlayer2.cards.length} cards. Tie Deck: ${tieDeck.cards.length} cards.`;
+    screenCardName.textContent = `${card1.name}`;
+    screenValueTastiness.textContent = `↑Tastiness: ${deckPlayer1.cards[0].tastiness.number.toString()}`;
+    screenValueSize.textContent = `↑Size: ${deckPlayer1.cards[0].size.number.toString()}`;
+    screenValueVowels.textContent = `↑Vowels: ${deckPlayer1.cards[0].vowels.number.toString()}`;
+    screenValueDifficulty.textContent = `↓Difficulty: ${deckPlayer1.cards[0].difficulty.number.toString()}`;
+    screenPicture.innerHTML = `<img id=picture src="${card1.image}" height="100px">`;
+    console.log(screenValueDifficulty.textContent);
+}
+
+updateScreen();
+
+//these handle selecting buttons
+
+screenValueTastiness.addEventListener("click", () => {
+    screenValueTastiness.style.backgroundColor='red';
+    screenValueSize.style.backgroundColor='';
+    screenValueVowels.style.backgroundColor='';
+    screenValueDifficulty.style.backgroundColor='';
+    screenInput.value = `Tastiness`;
+});
+
+screenValueSize.addEventListener("click", () => {
+    screenValueTastiness.style.backgroundColor='';
+    screenValueSize.style.backgroundColor='red';
+    screenValueVowels.style.backgroundColor='';
+    screenValueDifficulty.style.backgroundColor='';
+    screenInput.value = `Size`;
+});
+
+screenValueVowels.addEventListener("click", () => {
+    screenValueTastiness.style.backgroundColor='';
+    screenValueSize.style.backgroundColor='';
+    screenValueVowels.style.backgroundColor='red';
+    screenValueDifficulty.style.backgroundColor='';
+    screenInput.value = `Vowels`;
+});
+
+screenValueDifficulty.addEventListener("click", () => {
+    screenValueTastiness.style.backgroundColor='';
+    screenValueSize.style.backgroundColor='';
+    screenValueVowels.style.backgroundColor='';
+    screenValueDifficulty.style.backgroundColor='red';
+    screenInput.value = `Difficulty`;
+});
+
+screenConfirm.addEventListener("click", () => {
+    screenLastTurn.textContent = (compare(screenInput.value));
+    updateScreen();
+    gameOver();
+});
+    //add in lines here to link to the input field and button
+
+
+//playGame();
 
 //todo: maybe have it remember your name?
 //add more values for each fruit
+
+//we could take playGame, remove the prompt and put in putton to have it call compare() for the button type clicked.
+
+// const p1DeckNumber = document.getElementbyId("p1-cards");
+// p1DeckNumber.textContent = 5;
